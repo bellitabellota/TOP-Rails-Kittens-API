@@ -10,4 +10,20 @@ class KittensController < ApplicationController
   def new
     @kitten = Kitten.new
   end
+
+  def create
+    @kitten = Kitten.new(perm_params)
+
+    if @kitten.save
+      redirect_to @kitten
+    else
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def perm_params
+    params.require(:kitten).permit(:name, :age, :softness, :cuteness)
+  end
 end
