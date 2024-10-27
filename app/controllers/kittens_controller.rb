@@ -25,6 +25,16 @@ class KittensController < ApplicationController
     @kitten = Kitten.find(params[:id])
   end
 
+  def update
+    @kitten = Kitten.find(params[:id])
+
+    if @kitten.update(perm_params)
+      redirect_to @kitten
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def perm_params
