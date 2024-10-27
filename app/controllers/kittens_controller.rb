@@ -15,8 +15,10 @@ class KittensController < ApplicationController
     @kitten = Kitten.new(perm_params)
 
     if @kitten.save
+      flash[:success] = "You successfully created an entry for #{@kitten.name}!"
       redirect_to @kitten
     else
+      flash.now[:error] = "Ups. That did not work."
       render :new, status: :unprocessable_entity
     end
   end
@@ -29,8 +31,10 @@ class KittensController < ApplicationController
     @kitten = Kitten.find(params[:id])
 
     if @kitten.update(perm_params)
+      flash[:success] = "You successfully updated the entry for #{@kitten.name}!"
       redirect_to @kitten
     else
+      flash.now[:error] = "Ups. That did not work."
       render :edit, status: :unprocessable_entity
     end
   end
@@ -38,7 +42,7 @@ class KittensController < ApplicationController
   def destroy
     @kitten = Kitten.find(params[:id])
     @kitten.destroy
-
+    flash[:success] = "You successfully deleted the entry for #{@kitten.name}!"
     redirect_to root_path
   end
 
